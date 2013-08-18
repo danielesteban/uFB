@@ -60,7 +60,7 @@ LIB = {
 						} else {
 							/* Picture url extraction */
 							if(p.picture) {
-								(p.picture.indexOf('https://fbcdn-photos') === 0 || p.picture.indexOf('https://fbcdn-vthumb') === 0 || p.picture.indexOf('https://fbcdn-profile') === 0) && p.picture.indexOf('?') === -1 && (p.picture.lastIndexOf('_s') === p.picture.length - 6 || p.picture.lastIndexOf('_t') === p.picture.length - 6) && (p.picture = p.picture.substr(0, p.picture.length - 5) + 'n' + p.picture.substr(p.picture.length - 4));
+								(p.picture.indexOf('https://fbcdn-photos') === 0 || p.picture.indexOf('https://fbcdn-vthumb') === 0 || p.picture.indexOf('https://fbcdn-profile') === 0) && p.picture.indexOf('?') === -1 && p.picture.lastIndexOf('_') === p.picture.length - 6 && (p.picture = p.picture.substr(0, p.picture.length - 5) + 'n' + p.picture.substr(p.picture.length - 4));
 								if(p.picture.indexOf('https://fbexternal') === 0) {
 									var params = LIB.getParams(p.picture);
 									params.url && (p.picture = decodeURIComponent(params.url));
