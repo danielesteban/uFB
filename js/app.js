@@ -183,7 +183,7 @@ LIB = {
 		if(c > 0) n.text(c);
 		else n.hide();
 		li.fadeOut('fast', function() {
-			li.hide();
+			li.remove();
 			$('header div.user div.notifications li').length === 0 && $('header div.user div.notifications').hide();
 		});
 	},
