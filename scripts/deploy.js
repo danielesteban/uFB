@@ -58,13 +58,15 @@ function writeIndex(css, js) {
 	index += '<link href="/' + css + '.css" rel="stylesheet" />';
 	index += '<script src="/' + js + '.js" charset="utf-8"></script>';
 	index += html.substr(html.indexOf('<title>'));
-	fs.writeFileSync('bundle/index.html', str_replace_array(index, ["\n", "\r", "\t"], ['', '', '']));
+	index = str_replace_array(index, ["\n", "\r", "\t"], ['', '', '']);
+	fs.writeFileSync('bundle/index.html', index);
+	return require('crypto').createHash('md5').update(index).digest('hex');
 }
 
-function genManifest(css, js, callback) {
+function genManifest(index, css, js, callback) {
 	var imgs = fs.readdirSync('bundle/img'),
 	manifest = "CACHE:\n" +
-		"/\n" + 
+		"/?" + index + "\n" + 
 		"/" + css + ".css\n" +
 		"/" + js + ".js\n";
 
@@ -75,12 +77,12 @@ function genManifest(css, js, callback) {
 				manifest += "/img/" + img + "?" + md5s[i] + "\n"; 
 			});
 
-			x === 0 && (manifest += "\nFALLBACK:\n/ /\n");
+			x === 0 && (manifest += "\nFALLBACK:\n/ /?" + index + "\n");
 		}
 		
 		manifest += "\nNETWORK:\n" +
 			"/app.manifest\n" +
-			"*";
+			"*\n";
 
 		manifest = "CACHE MANIFEST\n\n# " + require('crypto').createHash('md5').update(manifest).digest('hex') + "\n\n" + manifest;
 
@@ -133,8 +135,8 @@ exec('rm -rf bundle', function() {
 									console.log('cleaning bundle...');
 									exec('rm -rf bundle/js bundle/css', function() {
 										console.log('generating index & manifest...');
-										writeIndex(cssMD5, jsMD5);
-										genManifest(cssMD5, jsMD5, function() {
+										var indexMD5 = writeIndex(cssMD5, jsMD5);
+										genManifest(indexMD5, cssMD5, jsMD5, function() {
 											//exec('rm -rf bundle', function() {
 												console.log('Done!');       
 											//});
