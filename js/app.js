@@ -206,7 +206,7 @@ $(window).load(function() {
 	$('body').append('<div id="fb-root"></div>');
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId : window.location.host.indexOf('localhost') !== 1 ? '505280316231529' : '587851521263817'
+			appId : window.location.host.indexOf('localhost') !== -1 ? '505280316231529' : '587851521263817'
 		});
 		FB.getLoginStatus(function(response){
 			if(!response.authResponse) $('section').html(Handlebars.templates.unauth());
