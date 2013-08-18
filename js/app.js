@@ -190,6 +190,12 @@ LIB = {
 		setTimeout(function() {
 			LIB.getNotifications();
 		}, 0);
+	},
+	nightMode : function(active) {
+		$('body')[(active ? 'add' : 'remove') + 'Class']('night');
+		if(!window.localStorage) return;
+		if(active) localStorage.setItem('nightMode', 1);
+		else localStorage.removeItem('nightMode');
 	}
 };
 
@@ -221,6 +227,9 @@ $(window).load(function() {
 	
 	/* Render the skin */
 	LIB.renderSkin();
+
+	/* Night mode preference (this could maybe be based on time, later) */
+	LIB.nightMode(window.localStorage && localStorage.getItem('nightMode'));
 
 	/* onResize handler */
 	var onResize = function() {

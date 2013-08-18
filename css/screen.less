@@ -75,10 +75,17 @@ header {
 				a {
 					display: block;
 					padding: 5px 10px;
+					color: #333;
 					&:hover {
 						color: #fff;
 						background: #3b5998;
+						[class^="icon-"], [class*=" icon-"] {
+							background-image: url("../img/icons-white.png");
+						}
 					}
+				}
+				li.dayMode {
+					display: none;
 				}
 			}
 		}
@@ -166,6 +173,35 @@ footer {
 	color: #808080;
 	a {
 		text-decoration: underline;
+	}
+}
+
+/* Night Mode */
+body.night {
+	background: #17181C;
+	color: #c0c0c0;
+	header {
+		background: #1e2d4d;
+		div.user div.popover ul li {
+			&.dayMode {
+				display: block;
+			}
+			&.nightMode {
+				display: none;
+			}
+		}
+	}
+	section a {
+		color: #fff;
+	}
+	div.post {
+		border-color: #222;
+		img.picture {
+			border-color: #444;
+		}
+	}
+	div.unauth h2 {
+		color: #fff;
 	}
 }
 

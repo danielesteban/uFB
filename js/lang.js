@@ -2,6 +2,8 @@ LANG = {
 	en : {
 		logInWithFB : 'Login with Facebook',
 		update : 'Update',
+		dayMode : 'Day mode',
+		nightMode : 'Night mode',
 		logout : 'Logout',
 		updating : 'Updating data',
 		Comment : 'Comment',
@@ -16,6 +18,8 @@ LANG = {
 	es : {
 		logInWithFB : 'Iniciar sesión con Facebook',
 		update : 'Actualizar',
+		dayMode : 'Modo día',
+		nightMode : 'Modo noche',
 		logout : 'Cerrar sesión',
 		updating : 'Actualizando datos',
 		Comment : 'Comentar',
