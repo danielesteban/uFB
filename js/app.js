@@ -186,6 +186,7 @@ LIB = {
 			li.remove();
 			$('header div.user div.notifications li').length === 0 && $('header div.user div.notifications').hide();
 		});
+		window.document.title = (c > 0 ? '(' + c + ') ' : '') + 'µFB';
 	},
 	update : function() {
 		LIB.getPosts();
