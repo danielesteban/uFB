@@ -139,7 +139,7 @@ LIB = {
 		var setBrs = function() {
 				$('div.data p.message').each(function(i, p) {
 					p = $(p);
-					p.html(p.text().replace(/\n/g, '<br>'));
+					$('br', p).length === 0 && p.html(p.text().replace(/\n/g, '<br>'));
 					//TODO: parse links
 				});
 			},
