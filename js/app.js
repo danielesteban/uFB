@@ -176,16 +176,13 @@ LIB = {
 		});
 	},
 	clickNotification : function(e) {
-		var li = $(e.target).parents('li').first(),
-			n = $('header div.user a.notifications'),
+		var n = $('header div.user a.notifications'),
 			c = parseInt(n.text(), 10) - 1;
 
 		if(c > 0) n.text(c);
 		else n.hide();
-		li.fadeOut('fast', function() {
-			li.remove();
-			$('header div.user div.notifications li').length === 0 && $('header div.user div.notifications').hide();
-		});
+		$(e.target).parents('li').first().remove();
+		$('header div.user div.notifications li').length === 0 && $('header div.user div.notifications').hide();
 		window.document.title = (c > 0 ? '(' + c + ') ' : '') + 'µFB';
 	},
 	update : function() {
