@@ -232,6 +232,19 @@ $(window).load(function() {
 	onResize();
 	$(window).resize(onResize);
 
+	/* Online handler */
+	var onOnline = function() {
+			if(navigator.onLine === false) {
+				$('header div.user').empty();
+				LIB.renderPosts();
+				$('body').fadeIn('fast');
+			} else if(navigator.onLine === true) document.location.reload();
+		};
+
+	$(window).bind('online', onOnline);
+	$(window).bind('offline', onOnline);
+	navigator.onLine === false && onOnline();
+
 	/* Init FB */
 	$('body').append('<div id="fb-root"></div>');
 	window.fbAsyncInit = function() {
@@ -242,6 +255,21 @@ $(window).load(function() {
 			if(!response.authResponse) $('section').html(Handlebars.templates.unauth());
 			else LIB.FBLoginCallback(response.authResponse); 
 			$('body').fadeIn('fast');
+	    	
+	    	/* auto-update interval & handler */
+	    	var updateTimeout,
+	    		setUpdateTimeout = function() {
+	    			clearTimeout(updateTimeout);
+	    			updateTimeout = setTimeout(function() {
+	    				LIB.update();
+	    				setUpdateTimeout();
+	    			}, 120000);
+		    	};
+	    	
+	    	setUpdateTimeout();	
+	    	$(window).mousemove(function() {
+	    		setUpdateTimeout();
+	    	});
 	    });
 	};
 	$.getScript('//connect.facebook.net/' + (L.lang === 'es' ? 'es_ES' : 'en_US') + '/all.js');
