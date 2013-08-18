@@ -162,7 +162,29 @@ LIB = {
 	},
 	getNotifications : function() {
 		FB.api('/me/notifications', function(r) {
-			console.log(r);
+			var n = $('header div.user a.notifications');
+			if(r.summary.unseen_count) n.text(r.summary.unseen_count).show();
+			else n.hide();
+			n = $('header div.user div.notifications');
+			if(r.data.length) {
+				n.empty();
+				r.data.forEach(function(d) {
+					n.append(Handlebars.partials.notification(d));
+				});
+			} else n.hide();
+			window.document.title = (r.summary.unseen_count ? '(' + r.summary.unseen_count + ') ' : '') + 'µFB';
+		});
+	},
+	clickNotification : function(e) {
+		var li = $(e.target).parents('li').first(),
+			n = $('header div.user a.notifications'),
+			c = parseInt(n.text(), 10) - 1;
+
+		if(c > 0) n.text(c);
+		else n.hide();
+		li.fadeOut('fast', function() {
+			li.hide();
+			$('header div.user div.notifications li').length === 0 && $('header div.user div.notifications').hide();
 		});
 	},
 	update : function() {
