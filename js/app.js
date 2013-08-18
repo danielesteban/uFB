@@ -167,7 +167,7 @@ LIB = {
 			else n.hide();
 			n = $('header div.user div.notifications');
 			if(r.data.length) {
-				n.empty();
+				n.empty().show();
 				r.data.forEach(function(d) {
 					n.append(Handlebars.partials.notification(d));
 				});
