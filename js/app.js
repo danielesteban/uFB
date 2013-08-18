@@ -36,7 +36,7 @@ LIB = {
 	},
 	getPosts : function() {
 		var since = parseInt(localStorage.getItem('since'), 10) - 3600,
-			params = { limit: 200 };
+			params = { limit: 500 };
 
 		since > 0 && (params.since = since);
 		$('section').html('<p class="updating">' + L.updating + '...</p>');
@@ -201,6 +201,14 @@ $(window).load(function() {
 	
 	/* Render the skin */
 	LIB.renderSkin();
+
+	/* onResize handler */
+	var onResize = function() {
+			$('section').css('minHeight', $(window).height() - 88);
+		};
+
+	onResize();
+	$(window).resize(onResize);
 
 	/* Init FB */
 	$('body').append('<div id="fb-root"></div>');
