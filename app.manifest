@@ -1,18 +1,22 @@
 CACHE MANIFEST
 
-# 76f61a18528486dcb2b1876c7c526670
+# 73098999eded0ec4e6cbcd67e7cb419a
 
 CACHE:
-/?baa1b95712b35c75e10a35b279c54088
-/55ed9750eae745698c5fa03c2a8bb13c.css
-/577bca681ce3aad9d3310463c83240ae.js
+/?9e536cc1c65adba9cd7cbc44305bd64d
+/7a40e84a58bfe49380a88e7a73a483a5.css
+/94835b44a5ad2db5c1940b86aac99e5e.js
 /img/favicon.ico?204b6a9f035759046cb38d053fd202c0
 /img/favicon.png?96afe60bb6bff7dbc552572eaf57fc8c
+/img/icons-white.png?9bbc6e9602998a385c2ea13df56470fd
+/img/icons.png?2516339970d710819585f90773aebe0a
 
 FALLBACK:
-/ /?baa1b95712b35c75e10a35b279c54088
+/ /?9e536cc1c65adba9cd7cbc44305bd64d
 /img/favicon.ico /img/favicon.ico?204b6a9f035759046cb38d053fd202c0
 /img/favicon.png /img/favicon.png?96afe60bb6bff7dbc552572eaf57fc8c
+/img/icons-white.png /img/icons-white.png?9bbc6e9602998a385c2ea13df56470fd
+/img/icons.png /img/icons.png?2516339970d710819585f90773aebe0a
 
 NETWORK:
 /app.manifest
