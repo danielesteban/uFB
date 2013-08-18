@@ -182,12 +182,28 @@ body.night {
 	color: #c0c0c0;
 	header {
 		background: #1e2d4d;
-		div.user div.popover ul li {
-			&.dayMode {
-				display: block;
+		div.user div.popover ul {
+			background: #17181C;
+			a {
+				color: #fff;
+				[class^="icon-"], [class*=" icon-"] {
+					background-image: url("../img/icons-white.png");
+				}
+				&:hover {
+					background: #fff;
+					color: #17181C;
+					[class^="icon-"], [class*=" icon-"] {
+						background-image: url("../img/icons.png");
+					}
+				}
 			}
-			&.nightMode {
-				display: none;
+			li {
+				&.dayMode {
+					display: block;
+				}
+				&.nightMode {
+					display: none;
+				}
 			}
 		}
 	}
