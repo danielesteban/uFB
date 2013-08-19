@@ -50,8 +50,10 @@ LIB = {
 			updating = '<p class="updating">' + L.updating + '...</p>';
 
 		since > 0 && (params.since = since);
-		if(update) $('section div.post').first().before(updating);
-		else $('section').html(updating);
+		if(update) {
+			$('section p.updating').remove();
+			$('section div.post').first().before(updating);
+		} else $('section').html(updating);
 		FB.api('/me/home', 'get', params, function(r) {
 			var noData = {
 					ids : [],
