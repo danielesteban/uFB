@@ -136,7 +136,7 @@ LIB = {
 			FB.api('/?ids=' + noData.ids.join(','), function(data) {
 				noData.ids.forEach(function(id, i) {
 					i = noData.indexes[i];
-					if(data[id]) r.data[i] = data[id];
+					if(data[id] && (data[id].message || data[id].picture || data[id].link)) r.data[i] = data[id];
 					else r.data[i].error = true;
 				});
 				store();
