@@ -269,7 +269,7 @@ $(window).load(function() {
 
 	/* onResize handler */
 	var onResize = function() {
-			$('section').css('minHeight', $(window).height() - 88);
+			$('section').css('minHeight', $(window).height() - 89);
 		};
 
 	onResize();
