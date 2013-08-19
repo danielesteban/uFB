@@ -110,7 +110,7 @@ LIB = {
 					/* store since date on localStorage */
 					if(window.localStorage && r.paging && r.paging.previous) {
 						var params = LIB.getParams(r.paging.previous);
-						params.since && (localStorage.setItem('since', parseInt(params.since, 10)));	
+						params.since && (localStorage.setItem('since', parseInt(params.since, 10)));    
 					}
 					
 					if(update) {
@@ -209,9 +209,9 @@ LIB = {
 			a = 1,
 			animate = function() {
 				i.fadeTo(400, a, function() {
-		        	a = a === 1 ? 0 : 1;
-		        	animate();
-		        });	
+					a = a === 1 ? 0 : 1;
+					animate();
+				}); 
 			};
 
 		i.stop().css('opacity', 0).parent().show();
@@ -298,13 +298,13 @@ $(window).load(function() {
 			if(!response.authResponse) $('section').html(Handlebars.templates.unauth());
 			else LIB.FBLoginCallback(response.authResponse); 
 			$('body').fadeIn('fast');
-	    	
-	    	/* auto-update interval & handler */
-	    	LIB.resetUpdateTimeout();
-	    	$(window).mousemove(function() {
-	    		LIB.resetUpdateTimeout();
-	    	});
-	    });
+			
+			/* auto-update interval & handler */
+			LIB.resetUpdateTimeout();
+			$(window).mousemove(function() {
+				LIB.resetUpdateTimeout();
+			});
+		});
 	};
 	$.getScript('//connect.facebook.net/' + (L.lang === 'es' ? 'es_ES' : 'en_US') + '/all.js');
 });
