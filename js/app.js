@@ -208,9 +208,15 @@ LIB = {
 		window.document.title = (c > 0 ? '(' + c + ') ' : '') + 'µFB';
 	},
 	update : function() {
-		clearTimeout(LIB.updateTimeout);
 		LIB.getPosts(true);
 		LIB.getNotifications();
+		LIB.resetUpdateTimeout();
+	},
+	resetUpdateTimeout : function() {
+		clearTimeout(LIB.updateTimeout);
+		LIB.updateTimeout = setTimeout(function() {
+			LIB.update();
+		}, 120000);
 	},
 	nightMode : function(active) {
 		$('body')[(active ? 'add' : 'remove') + 'Class']('night');
@@ -285,17 +291,9 @@ $(window).load(function() {
 			$('body').fadeIn('fast');
 	    	
 	    	/* auto-update interval & handler */
-	    	var setUpdateTimeout = function() {
-	    			clearTimeout(LIB.updateTimeout);
-	    			LIB.updateTimeout = setTimeout(function() {
-	    				LIB.update();
-	    				setUpdateTimeout();
-	    			}, 120000);
-		    	};
-	    	
-	    	setUpdateTimeout();	
+	    	LIB.resetUpdateTimeout();
 	    	$(window).mousemove(function() {
-	    		setUpdateTimeout();
+	    		LIB.resetUpdateTimeout();
 	    	});
 	    });
 	};
