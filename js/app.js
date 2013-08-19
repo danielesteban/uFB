@@ -26,7 +26,10 @@ LIB = {
 		FB.api('/me', function(user) {
 			$('header div.user').html(Handlebars.partials.user(user));
 		});
-		LIB.update();
+		LIB.getPosts();
+		setTimeout(function() {
+			LIB.getNotifications();
+		}, 0);
 	},
 	logout : function() {
 		FB.logout(function() {
@@ -34,12 +37,21 @@ LIB = {
 			document.location.reload();
 		});
 	},
-	getPosts : function() {
+	setBrs : function() {
+		$('div.data p.message').each(function(i, p) {
+			p = $(p);
+			$('br', p).length === 0 && p.html(p.text().replace(/\n/g, '<br>'));
+			//TODO: parse links
+		});
+	},
+	getPosts : function(update) {
 		var since = parseInt(localStorage.getItem('since'), 10) - 3600,
-			params = { limit: 500 };
+			params = { limit: 500 },
+			updating = '<p class="updating">' + L.updating + '...</p>';
 
 		since > 0 && (params.since = since);
-		$('section').html('<p class="updating">' + L.updating + '...</p>');
+		if(update) $('section div.post').first().before(updating);
+		else $('section').html(updating);
 		FB.api('/me/home', 'get', params, function(r) {
 			var noData = {
 					ids : [],
@@ -101,8 +113,17 @@ LIB = {
 						var params = LIB.getParams(r.paging.previous);
 						params.since && (localStorage.setItem('since', parseInt(params.since, 10)));	
 					}
-
-					LIB.renderPosts();
+					
+					if(update) {
+						var fp = $('section div.post').first();
+						r.data.forEach(function(p) {
+							fp.before(Handlebars.partials.post(JSON.parse(localStorage.getItem('post:' + p.id))));
+						});
+						$('section p.updating').first().fadeOut('fast', function() {
+							$(this).remove();
+						});
+						LIB.setBrs();
+					} else LIB.renderPosts();
 				};
 
 			r.data.forEach(function(p, i) {
@@ -136,29 +157,28 @@ LIB = {
 		for(var x=0; x<postIndex; x++) $('section').append(Handlebars.partials.post(JSON.parse(localStorage.getItem('post:' + posts[x]))));
 
 		//get previous content on scroll
-		var setBrs = function() {
-				$('div.data p.message').each(function(i, p) {
-					p = $(p);
-					$('br', p).length === 0 && p.html(p.text().replace(/\n/g, '<br>'));
-					//TODO: parse links
-				});
-			},
-			onScroll = function() {
+		var onScroll = function() {
 				var bt = (doc.height() - w.height()) * 0.8;
 				if(bt < 200 || w.scrollTop() > bt) {
-					if(postIndex >= posts.length -1) return w.unbind('scroll', onScroll);
+					if(postIndex >= posts.length -1) {
+						w.unbind('scroll', onScroll);
+						delete LIB.onScroll;
+						return;
+					}
 					var to = postIndex + pageSize;
 					to >= posts.length && (to = posts.length - 1);
 					for(var x=postIndex; x<to; x++) {
 						$('section').append(Handlebars.partials.post(JSON.parse(localStorage.getItem('post:' + posts[x]))));
 					}
-					setBrs();
+					LIB.setBrs();
 					postIndex = to;
 				}
 			};
 
+		LIB.onScroll && w.unbind('scroll', LIB.onScroll);
+		LIB.onScroll = onScroll;
 		w.bind('scroll', onScroll);
-		setBrs();
+		LIB.setBrs();
 	},
 	getNotifications : function() {
 		FB.api('/me/notifications', function(r) {
@@ -186,10 +206,9 @@ LIB = {
 		window.document.title = (c > 0 ? '(' + c + ') ' : '') + 'µFB';
 	},
 	update : function() {
-		LIB.getPosts();
-		setTimeout(function() {
-			LIB.getNotifications();
-		}, 0);
+		clearTimeout(LIB.updateTimeout);
+		LIB.getPosts(true);
+		LIB.getNotifications();
 	},
 	nightMode : function(active) {
 		$('body')[(active ? 'add' : 'remove') + 'Class']('night');
@@ -264,10 +283,9 @@ $(window).load(function() {
 			$('body').fadeIn('fast');
 	    	
 	    	/* auto-update interval & handler */
-	    	var updateTimeout,
-	    		setUpdateTimeout = function() {
-	    			clearTimeout(updateTimeout);
-	    			updateTimeout = setTimeout(function() {
+	    	var setUpdateTimeout = function() {
+	    			clearTimeout(LIB.updateTimeout);
+	    			LIB.updateTimeout = setTimeout(function() {
 	    				LIB.update();
 	    				setUpdateTimeout();
 	    			}, 120000);
