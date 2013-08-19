@@ -50,10 +50,7 @@ LIB = {
 			updating = '<p class="updating">' + L.updating + '...</p>';
 
 		since > 0 && (params.since = since);
-		if(update) {
-			$('section p.updating').remove();
-			$('section div.post').first().before(updating);
-		} else $('section').html(updating);
+		!update && $('section').html(updating);
 		FB.api('/me/home', 'get', params, function(r) {
 			var noData = {
 					ids : [],
@@ -121,10 +118,10 @@ LIB = {
 						r.data.forEach(function(p) {
 							fp.before(Handlebars.partials.post(JSON.parse(localStorage.getItem('post:' + p.id))));
 						});
-						$('section p.updating').first().fadeOut('fast', function() {
-							$(this).remove();
-						});
 						LIB.setBrs();
+						$('header div.user span.updating i').stop().fadeOut(400, function() {
+							$(this).parent.hide();
+						});
 					} else LIB.renderPosts();
 				};
 
@@ -208,6 +205,18 @@ LIB = {
 		window.document.title = (c > 0 ? '(' + c + ') ' : '') + 'µFB';
 	},
 	update : function() {
+		var i = $('header div.user span.updating i'),
+			a = 1,
+			animate = function() {
+				i.fadeTo(400, a, function() {
+		        	a = a === 1 ? 0 : 1;
+		        	animate();
+		        });	
+			};
+
+		i.stop().css('opacity', 0).parent().show();
+		animate();
+
 		LIB.getPosts(true);
 		LIB.getNotifications();
 		LIB.resetUpdateTimeout();

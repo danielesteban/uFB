@@ -30,13 +30,13 @@ header {
 		h4 {
 			padding: 0;
 		}
-		img, a.notifications {
+		img, a.notifications, span.updating {
 			width: 50px;
 			height: 50px;
 			margin: 0 10px 0 0;
 			vertical-align: middle;
 		}
-		a.notifications {
+		a.notifications, span.updating {
 			position: relative;
 			display: none;
 			height: 20px;
@@ -49,6 +49,10 @@ header {
 			left: 50px;
 			color: #fff;
 			text-align: center;
+		}
+		span.updating {
+			left: 0;
+			background: none;
 		}
 		div.notifications {
 			display: none;
